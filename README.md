@@ -189,6 +189,35 @@ claude
 If you skip setting these initially, you can always set them later and start a new Claude Code session.
 
 
+## FAQ
+
+### Do I need to run the setup commands everytime I start a project?
+
+**No!** Most setup is one-time:
+
+**One-Time Setup (Global):**
+- ✅ **Plugin installation** - Install once with `/plugin install rywerth-dbx/simple-databricks-starter`, available everywhere
+- ✅ **Databricks CLI** - Install once, works across all projects
+- ✅ **Authentication profiles** - Set up once in `~/.databrickscfg`, persists forever
+- ✅ **databricks-connect** - Install once per Python environment (if using virtual environments)
+
+**Per-Session (Optional):**
+- ⚠️ **Environment variables** - Only needed if you want DBSQL MCP queries. Set before starting Claude Code:
+  ```bash
+  export DATABRICKS_WORKSPACE_URL=https://your-workspace.cloud.databricks.com
+  export DATABRICKS_TOKEN=dapi...
+  claude
+  ```
+
+**When to Re-Run `/databricks-environment-setup`:**
+- First time using the plugin
+- Troubleshooting environment issues
+- Setting up a new machine
+- Verifying everything is working correctly
+
+**For New Projects:**
+Just start Claude Code and start working! The plugin and all configurations are already available. Only set environment variables if you need MCP data querying.
+
 ## Resources
 
 - [Databricks Connect](https://docs.databricks.com/dev-tools/databricks-connect/)
