@@ -6,10 +6,7 @@
     "name": "Ryan Werth"
   },
   "homepage": "https://github.com/rywerth-dbx/simple-databricks-starter",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rywerth-dbx/simple-databricks-starter.git"
-  },
+  "repository": "https://github.com/rywerth-dbx/simple-databricks-starter.git",
   "license": "MIT",
   "keywords": [
     "databricks",
