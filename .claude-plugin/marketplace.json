@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "simple-databricks-starter",
-      "source": ".",
+      "source": "./",
       "description": "Complete Databricks development toolkit with skills for authentication, workspace management, job orchestration, Databricks Connect configuration, and DBSQL MCP queries",
       "version": "1.0.0"
     }
