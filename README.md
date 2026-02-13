@@ -39,19 +39,24 @@ Query your data directly using the [Databricks DBSQL MCP Server](https://docs.da
 
 ### Install the Plugin
 
-Install directly from the GitHub repository:
+Install from GitHub in two steps:
 
 1. Start Claude Code in any directory:
    ```bash
    claude
    ```
 
-2. Install the plugin from GitHub:
+2. Add the marketplace:
    ```
-   /plugin install rywerth-dbx/simple-databricks-starter
+   /plugin marketplace add rywerth-dbx/simple-databricks-starter
    ```
 
-3. The plugin will be installed and its skills will be immediately available
+3. Install the plugin:
+   ```
+   /plugin install simple-databricks-starter@simple-databricks-starter-marketplace
+   ```
+
+4. The plugin will be installed and its skills will be immediately available
 
 Learn more about [Claude Code plugins](https://code.claude.com/docs/en/discover-plugins).
 
@@ -236,4 +241,4 @@ Ryan Werth
 
 ---
 
-**Ready to start?** Install the plugin with `/plugin install rywerth-dbx/simple-databricks-starter`, run `/databricks-environment-setup`, and start building with Databricks!
+**Ready to start?** Add the marketplace with `/plugin marketplace add rywerth-dbx/simple-databricks-starter`, install the plugin, run `/databricks-environment-setup`, and start building with Databricks!

@@ -1,0 +1,11 @@
+{
+  "name": "simple-databricks-starter-marketplace",
+  "version": "1.0.0",
+  "description": "Databricks development toolkit for Claude Code",
+  "plugins": [
+    {
+      "name": "simple-databricks-starter",
+      "source": "."
+    }
+  ]
+}
