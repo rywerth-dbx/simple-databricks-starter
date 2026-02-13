@@ -12,7 +12,7 @@ This is the **comprehensive setup skill** for Databricks development with Claude
 - ✅ **Databricks CLI** (v0.205+) - for workspace operations
 - ✅ **databricks-connect** (v17.3+ or 18.x) - for local-to-remote code execution
 - ✅ **Authentication Profiles** - OAuth or token-based auth
-- ✅ **Environment Configuration** - .env file with workspace settings
+- ✅ **MCP Environment Variables** - for DBSQL queries
 - ✅ **Conflict Detection** - prevents pyspark conflicts
 
 **Run this skill FIRST** when setting up a new project or troubleshooting environment issues.

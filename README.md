@@ -1,10 +1,10 @@
 # Simple Databricks Starter
 
-A complete Databricks development toolkit for local development with Claude Code. This plugin provides skills for authentication, workspace management, job orchestration, Databricks Connect configuration, and direct SQL querying via MCP.
+The simplest Databricks development toolkit for local development with Claude Code. This plugin provides skills for authentication, workspace management, job orchestration, Databricks Connect configuration, and direct SQL querying via MCP.
 
 ## Overview
 
-This Claude Code plugin provides everything you need to develop Databricks applications locally. It's built around three core capabilities:
+This Claude Code plugin provides everything you need to get up and running with Claude Code and Databricks. It's built around three core capabilities:
 
 ### 1. 📝 Writing & Running Code - Databricks Connect
 
@@ -18,7 +18,7 @@ Write Python code locally that runs seamlessly on Databricks without modificatio
 Interact with your Databricks workspace using the [Databricks CLI](https://docs.databricks.com/dev-tools/cli/) to upload/download files, create jobs, and more.
 
 **Skills:**
-- [`databricks-environment-setup`](skills/databricks-environment-setup/) - Comprehensive environment validation (CLI, databricks-connect, auth, .env)
+- [`databricks-environment-setup`](skills/databricks-environment-setup/) - Comprehensive environment validation (CLI, databricks-connect, auth, MCP)
 - [`databricks-auth-manager`](skills/databricks-auth-manager/) - Configure OAuth authentication with profiles
 - [`databricks-job-orchestrator`](skills/databricks-job-orchestrator/) - Create, run, and monitor jobs
 - [`databricks-workspace-sync`](skills/databricks-workspace-sync/) - Upload and download files to/from workspace
@@ -39,15 +39,21 @@ Query your data directly using the [Databricks DBSQL MCP Server](https://docs.da
 
 ### Install the Plugin
 
-```bash
-# Clone the repository
-git clone https://github.com/rywerth-dbx/simple-databricks-starter.git
+Install directly from the GitHub repository:
 
-# Link or install the plugin
-# (Installation method depends on Claude Code plugin support)
-```
+1. Start Claude Code in any directory:
+   ```bash
+   claude
+   ```
 
-**Note:** Once Claude Code supports plugin installation, you'll be able to install directly from GitHub. Until then, you can manually link skills to your `.claude/skills/` directory or use the plugin locally.
+2. Install the plugin from GitHub:
+   ```
+   /plugin install rywerth-dbx/simple-databricks-starter
+   ```
+
+3. The plugin will be installed and its skills will be immediately available
+
+Learn more about [Claude Code plugins](https://code.claude.com/docs/en/discover-plugins).
 
 ## Quick Start
 
@@ -72,7 +78,7 @@ export DATABRICKS_TOKEN=dapi...your-token-here
 
 ### Step 1: Run Environment Setup
 
-Navigate to your Databricks project directory and start Claude Code:
+Navigate to a project directory and start Claude Code:
 
 ```bash
 cd ~/my-databricks-project
@@ -126,7 +132,7 @@ Configure OAuth authentication for CLI operations:
 /databricks-auth-manager
 ```
 
-This creates a profile in `~/.databrickscfg` for secure authentication.
+This verifies or creates a profile in `~/.databrickscfg` for secure authentication.
 
 ### Step 3: Validate Databricks Connect
 
@@ -157,41 +163,6 @@ You're now ready to work with Databricks! Ask Claude to:
 | **databricks-workspace-sync** | Upload/download workspace files | When managing notebooks and scripts |
 | **databricks-job-orchestrator** | Create and manage jobs | When orchestrating workflows |
 
-### Skill Descriptions
-
-#### databricks-environment-setup
-Validates ALL prerequisites for Databricks development:
-- Checks Databricks CLI installation (v0.205+)
-- Checks databricks-connect in Python environment
-- Verifies authentication profiles exist
-- Checks for `.env` configuration
-- Detects conflicts (pyspark)
-- Provides installation guidance for missing components
-
-#### databricks-auth-manager
-Manages Databricks CLI authentication:
-- OAuth 2.0 flow (recommended)
-- Profile management in `~/.databrickscfg`
-- Multi-workspace support
-
-#### databricks-connect-config
-Configures and validates Databricks Connect:
-- DatabricksSession setup
-- Connection testing
-- Troubleshooting guidance
-- Remote cluster configuration
-
-#### databricks-workspace-sync
-Upload and download files to/from Databricks workspace:
-- Upload notebooks (.py, .ipynb)
-- Download files from workspace
-- Directory synchronization
-
-#### databricks-job-orchestrator
-Create and manage Databricks jobs:
-- Job creation from notebooks/scripts
-- Job monitoring and status checking
-- Run history and logs
 
 ## Configuration
 
@@ -217,101 +188,6 @@ claude
 
 If you skip setting these initially, you can always set them later and start a new Claude Code session.
 
-### MCP Server Configuration (.mcp.json)
-
-The plugin includes pre-configured MCP server settings for Databricks DBSQL:
-
-```json
-{
-  "mcpServers": {
-    "databricks-dbsql": {
-      "type": "http",
-      "url": "${DATABRICKS_WORKSPACE_URL}/api/2.0/mcp/sql",
-      "headers": {
-        "Authorization": "Bearer ${DATABRICKS_TOKEN}"
-      }
-    }
-  }
-}
-```
-
-This configuration is automatically loaded when you install the plugin.
-
-## Troubleshooting
-
-### CLI Not Found
-**Problem:** `databricks: command not found`
-
-**Solution:** Run `/databricks-environment-setup` to install the CLI.
-
-### databricks-connect Not Found
-**Problem:** `ModuleNotFoundError: No module named 'databricks.connect'`
-
-**Solution:**
-```bash
-# Using uv
-uv add "databricks-connect==17.3.*"
-
-# Or using pip
-pip install "databricks-connect==17.3.*"
-```
-
-Then re-run `/databricks-environment-setup` to validate.
-
-### Authentication Failed
-**Problem:** CLI commands return authentication errors
-
-**Solution:** Run `/databricks-auth-manager` to configure OAuth authentication.
-
-### Connection Error
-**Problem:** Databricks Connect can't connect to workspace
-
-**Solution:**
-1. Verify authentication: Run `/databricks-auth-manager`
-2. Test connection: Run `/databricks-connect-config`
-3. Check profile: Ensure `DATABRICKS_CONFIG_PROFILE` in `.env` matches your `~/.databrickscfg` profile
-
-### MCP Server Issues
-**Problem:** Claude can't query your data
-
-**Solution:**
-The DBSQL MCP server requires environment variables to be set **before starting Claude Code**:
-
-```bash
-export DATABRICKS_WORKSPACE_URL=https://your-workspace.cloud.databricks.com
-export DATABRICKS_TOKEN=dapi...your-token-here
-claude
-```
-
-To verify they're set:
-```bash
-echo $DATABRICKS_WORKSPACE_URL
-echo $DATABRICKS_TOKEN
-```
-
-If they're not set or incorrect:
-1. Set the environment variables in your terminal
-2. Exit Claude Code
-3. Start a new Claude Code session
-4. Run `/databricks-environment-setup` to verify
-
-### PySpark Conflict
-**Problem:** Import errors with databricks-connect
-
-**Solution:** databricks-connect and pyspark are mutually exclusive. Uninstall pyspark:
-```bash
-pip uninstall pyspark
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit issues or pull requests.
-
-### Areas for Contribution
-- Additional skills for Databricks features (Lakebase, Apps, etc.)
-- Enhanced error handling and diagnostics
-- Documentation improvements
-- Platform-specific installation guides
 
 ## Resources
 
@@ -331,4 +207,4 @@ Ryan Werth
 
 ---
 
-**Ready to start?** Clone this repository, run `/databricks-environment-setup` in Claude Code, and start building with Databricks!
+**Ready to start?** Install the plugin with `/plugin install rywerth-dbx/simple-databricks-starter`, run `/databricks-environment-setup`, and start building with Databricks!

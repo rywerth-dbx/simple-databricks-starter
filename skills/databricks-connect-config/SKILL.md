@@ -51,9 +51,6 @@ echo $DATABRICKS_SERVERLESS_COMPUTE_ID  # Must be set
 # OR
 echo $DATABRICKS_CLUSTER_ID  # Must be set
 
-# If not set, load from .env
-source .env
-
 # Verify which workspace you'll connect to
 databricks auth profiles
 ```
@@ -165,9 +162,6 @@ Claude: Setting profile and running script...
 
      # Set the desired profile
      export DATABRICKS_CONFIG_PROFILE=<chosen-profile>
-
-     # Update .env file if using one
-     echo "export DATABRICKS_CONFIG_PROFILE=<chosen-profile>" >> .env
      ```
 
 **Example conversation:**
@@ -245,32 +239,6 @@ databricks clusters list --output json | jq '.clusters[] | select(.state == "RUN
 ```bash
 export DATABRICKS_CONFIG_PROFILE=my-workspace
 export DATABRICKS_CLUSTER_ID=1234-567890-abcdef12
-python my_script.py
-```
-
-## Recommended Setup: .env File
-
-Create a `.env` file in your project directory for easy configuration:
-
-```bash
-# .env file for local development
-# When running in Databricks workspace, these are not needed
-
-# Option 1: Use serverless (recommended)
-export DATABRICKS_CONFIG_PROFILE=fe-vm-ryan-werth-workspace
-export DATABRICKS_SERVERLESS_COMPUTE_ID=auto
-
-# Option 2: Use specific cluster (uncomment to use)
-# export DATABRICKS_CONFIG_PROFILE=fe-vm-ryan-werth-workspace
-# export DATABRICKS_CLUSTER_ID=<your-cluster-id>
-```
-
-**Usage:**
-```bash
-# Load environment variables
-source .env
-
-# Run your script
 python my_script.py
 ```
 
@@ -501,13 +469,11 @@ Check cluster runtime version in workspace UI before installing.
 2. **NEVER hardcode configuration in code** - Always use `DatabricksSession.builder.getOrCreate()`
 3. **When connection fails** - Check `~/.databrickscfg`, ask user which workspace, set `DATABRICKS_CONFIG_PROFILE`
 4. **Use environment variables for local development** - Set `DATABRICKS_CONFIG_PROFILE` + (`DATABRICKS_SERVERLESS_COMPUTE_ID` or `DATABRICKS_CLUSTER_ID`)
-5. **Create a .env file** - Store environment variables in a `.env` file for easy management
-6. **Add .env to .gitignore** - Never commit environment configuration to version control
-7. **Default to serverless** - Simpler and more cost-effective for most workloads (but note: no `.cache()` or `.persist()` support)
-8. **Test connection after setup** - Use `spark.range(10).count()` to verify
-9. **Match runtime versions** - Keep databricks-connect version aligned with cluster runtime
-10. **Use virtual environments** - Isolate dependencies per project
-11. **Write portable code** - Same code should run locally and in Databricks workspace
+5. **Default to serverless** - Simpler and more cost-effective for most workloads (but note: no `.cache()` or `.persist()` support)
+6. **Test connection after setup** - Use `spark.range(10).count()` to verify
+7. **Match runtime versions** - Keep databricks-connect version aligned with cluster runtime
+8. **Use virtual environments** - Isolate dependencies per project
+9. **Write portable code** - Same code should run locally and in Databricks workspace
 
 ## Summary
 
