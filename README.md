@@ -51,6 +51,25 @@ git clone https://github.com/rywerth-dbx/simple-databricks-starter.git
 
 ## Quick Start
 
+### Step 0: Set Environment Variables (Optional but Recommended)
+
+To enable **DBSQL MCP queries** (so Claude can query your data directly), set these environment variables **before starting Claude Code**:
+
+```bash
+export DATABRICKS_WORKSPACE_URL=https://your-workspace.cloud.databricks.com
+export DATABRICKS_TOKEN=dapi...your-token-here
+```
+
+**How to get these values:**
+- **Workspace URL**: Your Databricks workspace URL (check your browser when logged in)
+- **Token**: Generate a personal access token:
+  - Go to User Settings → Developer → Access Tokens
+  - Click "Generate New Token"
+  - Copy the token value
+  - [PAT Documentation](https://docs.databricks.com/dev-tools/auth/pat.html)
+
+**Important:** If you skip this step, all skills will work (auth, connect, workspace sync, jobs) **except** DBSQL MCP queries. You can always set these later and start a new session.
+
 ### Step 1: Run Environment Setup
 
 Navigate to your Databricks project directory and start Claude Code:
@@ -70,7 +89,7 @@ This skill will:
 - ✅ Check for Databricks CLI (v0.205+)
 - ✅ Check for databricks-connect in your Python environment
 - ✅ Verify authentication profiles exist
-- ✅ Offer to copy `.env.example` template if needed
+- ✅ Check if MCP environment variables are set (for data querying)
 - ✅ Detect conflicts (like pyspark)
 
 **What happens if something is missing?**
@@ -99,26 +118,7 @@ uv add "databricks-connect==17.3.*"
 pip install "databricks-connect==17.3.*"
 ```
 
-### Step 2: Configure Environment Variables
-
-If you don't have a `.env` file, the setup skill will offer to copy the template. Edit `.env` with your workspace details:
-
-```bash
-DATABRICKS_WORKSPACE_URL=https://your-workspace.cloud.databricks.com
-DATABRICKS_TOKEN=dapi...your-token-here
-```
-
-**How to get these values:**
-1. **Workspace URL**: Your Databricks workspace URL (check your browser when logged in)
-2. **Token**: Generate a personal access token:
-   - Go to User Settings → Developer → Access Tokens
-   - Click "Generate New Token"
-   - Copy the token value
-   - [PAT Documentation](https://docs.databricks.com/dev-tools/auth/pat.html)
-
-After creating `.env`, restart Claude Code or reload the MCP server configuration to apply changes.
-
-### Step 3: Set Up Authentication
+### Step 2: Set Up Authentication
 
 Configure OAuth authentication for CLI operations:
 
@@ -128,7 +128,7 @@ Configure OAuth authentication for CLI operations:
 
 This creates a profile in `~/.databrickscfg` for secure authentication.
 
-### Step 4: Validate Databricks Connect
+### Step 3: Validate Databricks Connect
 
 Verify that local-to-remote execution works:
 
@@ -136,7 +136,7 @@ Verify that local-to-remote execution works:
 /databricks-connect-config
 ```
 
-### Step 5: Start Building!
+### Step 4: Start Building!
 
 You're now ready to work with Databricks! Ask Claude to:
 - Analyze tables and explore schemas
@@ -195,16 +195,27 @@ Create and manage Databricks jobs:
 
 ## Configuration
 
-### Environment Variables (.env)
+### Environment Variables (Optional - For MCP)
 
-The MCP server requires two environment variables:
+The DBSQL MCP server requires two environment variables to be set **before starting Claude Code**:
 
 ```bash
-DATABRICKS_WORKSPACE_URL=https://your-workspace.cloud.databricks.com
-DATABRICKS_TOKEN=dapi...your-token-here
+export DATABRICKS_WORKSPACE_URL=https://your-workspace.cloud.databricks.com
+export DATABRICKS_TOKEN=dapi...your-token-here
+claude
 ```
 
-These enable Claude to query your data directly via the DBSQL MCP server.
+**What these enable:**
+- Direct data querying via DBSQL MCP server
+- Claude can explore your tables and schemas
+- Claude can write and execute SQL queries
+
+**What still works without them:**
+- All skills (auth, connect, workspace sync, jobs)
+- Databricks Connect for PySpark code
+- CLI operations
+
+If you skip setting these initially, you can always set them later and start a new Claude Code session.
 
 ### MCP Server Configuration (.mcp.json)
 
@@ -264,14 +275,25 @@ Then re-run `/databricks-environment-setup` to validate.
 **Problem:** Claude can't query your data
 
 **Solution:**
-- Verify `.env` exists and is configured
-- Check environment variables are set:
-  ```bash
-  echo $DATABRICKS_WORKSPACE_URL
-  echo $DATABRICKS_TOKEN
-  ```
-- Restart Claude Code to reload MCP configuration
-- Verify token is valid: `databricks auth token`
+The DBSQL MCP server requires environment variables to be set **before starting Claude Code**:
+
+```bash
+export DATABRICKS_WORKSPACE_URL=https://your-workspace.cloud.databricks.com
+export DATABRICKS_TOKEN=dapi...your-token-here
+claude
+```
+
+To verify they're set:
+```bash
+echo $DATABRICKS_WORKSPACE_URL
+echo $DATABRICKS_TOKEN
+```
+
+If they're not set or incorrect:
+1. Set the environment variables in your terminal
+2. Exit Claude Code
+3. Start a new Claude Code session
+4. Run `/databricks-environment-setup` to verify
 
 ### PySpark Conflict
 **Problem:** Import errors with databricks-connect

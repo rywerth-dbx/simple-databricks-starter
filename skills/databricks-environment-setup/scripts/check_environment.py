@@ -170,41 +170,37 @@ def check_auth():
         return False
 
 
-def check_env_file():
-    """Check if .env file exists in current directory."""
-    print("\n🔍 Checking environment configuration...")
+def check_mcp_env_vars():
+    """Check if MCP environment variables are set."""
+    print("\n🔍 Checking DBSQL MCP environment variables...")
 
-    env_file = Path(".env")
+    workspace_url = os.environ.get("DATABRICKS_WORKSPACE_URL")
+    token = os.environ.get("DATABRICKS_TOKEN")
 
-    if env_file.exists():
-        print(f"  ✅ .env file found in current directory")
-
-        # Check for required variables
-        try:
-            with open(env_file, 'r') as f:
-                content = f.read()
-                has_url = "DATABRICKS_WORKSPACE_URL" in content
-                has_token = "DATABRICKS_TOKEN" in content
-
-                if has_url and has_token:
-                    print(f"  ✅ Required variables present (DATABRICKS_WORKSPACE_URL, DATABRICKS_TOKEN)")
-                    return True
-                else:
-                    missing = []
-                    if not has_url:
-                        missing.append("DATABRICKS_WORKSPACE_URL")
-                    if not has_token:
-                        missing.append("DATABRICKS_TOKEN")
-                    print(f"  ⚠️  Missing required variables: {', '.join(missing)}")
-                    print(f"     Add these to your .env file")
-                    return False
-        except Exception as e:
-            print(f"  ⚠️  Could not read .env file: {e}")
-            return False
+    if workspace_url and token:
+        print(f"  ✅ DATABRICKS_WORKSPACE_URL is set")
+        print(f"  ✅ DATABRICKS_TOKEN is set")
+        print(f"  ✅ DBSQL MCP server should be working")
+        return True
     else:
-        print(f"  ℹ️  No .env file found in current directory")
-        print(f"     Copy .env.example from the plugin root and configure it:")
-        print(f"     cp <plugin-root>/.env.example .env")
+        missing = []
+        if not workspace_url:
+            missing.append("DATABRICKS_WORKSPACE_URL")
+        if not token:
+            missing.append("DATABRICKS_TOKEN")
+
+        print(f"  ⚠️  Missing environment variables: {', '.join(missing)}")
+        print(f"")
+        print(f"  ⚠️  The DBSQL MCP server will NOT work without these variables.")
+        print(f"")
+        print(f"  To enable DBSQL MCP queries, set these variables before starting Claude Code:")
+        print(f"")
+        print(f"     export DATABRICKS_WORKSPACE_URL=https://your-workspace.cloud.databricks.com")
+        print(f"     export DATABRICKS_TOKEN=dapi...your-token-here")
+        print(f"     claude")
+        print(f"")
+        print(f"  Then start a new Claude Code session.")
+        print(f"")
         return False
 
 
@@ -221,7 +217,7 @@ def main():
         "Virtual Environment": check_venv(),
         "No PySpark Conflict": check_pyspark_conflict(),
         "Authentication": check_auth(),
-        "Environment Configuration": check_env_file(),
+        "MCP Environment Variables": check_mcp_env_vars(),
     }
 
     print("\n" + "=" * 60)

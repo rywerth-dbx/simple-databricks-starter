@@ -155,33 +155,34 @@ python -c "from databricks.connect import DatabricksSession; print('Import succe
 - Deactivate and recreate: `deactivate && rm -rf venv && python -m venv venv`
 - Always activate before installing: `source venv/bin/activate`
 
-## 5. Configure Environment Variables
+## 5. Check MCP Environment Variables (Optional)
 
-This plugin requires environment variables for the MCP server configuration:
+The DBSQL MCP server requires environment variables to be set **before starting Claude Code**:
 
 ```bash
-# Check if .env exists in current project
-ls .env
-
-# If missing, copy the template from plugin
-# (Claude Code will offer to do this automatically)
-cp ${CLAUDE_PLUGIN_ROOT}/.env.example .env
+export DATABRICKS_WORKSPACE_URL=https://your-workspace.cloud.databricks.com
+export DATABRICKS_TOKEN=dapi...your-token-here
+claude
 ```
 
-**Required environment variables:**
-```bash
-DATABRICKS_WORKSPACE_URL=https://your-workspace.cloud.databricks.com
-DATABRICKS_TOKEN=dapi...your-token-here
-```
+**What happens if these aren't set?**
+- ✅ All skills will still work (auth, connect, workspace sync, jobs)
+- ✅ Databricks Connect will still work
+- ❌ DBSQL MCP queries will NOT work (Claude won't be able to query your data directly)
+
+**This skill will check** if these variables are set and inform you if the MCP server won't work.
 
 **How to get these values:**
-1. Workspace URL: Your Databricks workspace URL (e.g., `https://dbc-12345678-abcd.cloud.databricks.com`)
-2. Token: Generate a personal access token:
-   - Go to User Settings > Developer > Access Tokens
+1. **Workspace URL**: Your Databricks workspace URL (e.g., `https://dbc-12345678-abcd.cloud.databricks.com`)
+2. **Token**: Generate a personal access token:
+   - Go to User Settings → Developer → Access Tokens
    - Click "Generate New Token"
    - Copy the token value
 
-After creating `.env`, restart Claude Code or reload the MCP server configuration to apply changes.
+**To enable MCP later:**
+- Set the environment variables
+- Start a new Claude Code session
+- Run this skill again to verify
 
 ## Next Steps
 
