@@ -1,0 +1,26 @@
+{
+  "name": "simple-databricks-starter",
+  "version": "1.0.0",
+  "description": "Complete Databricks development toolkit for local development with Claude Code. Provides skills for authentication, workspace management, job orchestration, Databricks Connect configuration, and direct SQL querying via MCP.",
+  "author": {
+    "name": "Ryan Werth"
+  },
+  "homepage": "https://github.com/rywerth-dbx/simple-databricks-starter",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rywerth-dbx/simple-databricks-starter.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "databricks",
+    "spark",
+    "pyspark",
+    "data-engineering",
+    "analytics",
+    "sql",
+    "databricks-connect",
+    "cli"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

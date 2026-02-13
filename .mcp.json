@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "databricks-dbsql": {
+            "type": "http",
+            "url": "${DATABRICKS_WORKSPACE_URL}/api/2.0/mcp/sql",
+            "headers": {
+                "Authorization": "Bearer ${DATABRICKS_TOKEN}"
+            }
+        }
+    }
+}
