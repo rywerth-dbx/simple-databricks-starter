@@ -11,17 +11,17 @@ This Claude Code plugin provides everything you need to get up and running with 
 Write Python code locally that runs seamlessly on Databricks without modifications using [Databricks Connect](https://docs.databricks.com/dev-tools/databricks-connect/).
 
 **Skills:**
-- [`databricks-connect-config`](skills/databricks-connect-config/) - Configure DatabricksSession for local-to-remote execution
+- [`databricks-connect-config`](plugin/skills/databricks-connect-config/) - Configure DatabricksSession for local-to-remote execution
 
 ### 2. 🔧 Workspace Operations - Databricks CLI
 
 Interact with your Databricks workspace using the [Databricks CLI](https://docs.databricks.com/dev-tools/cli/) to upload/download files, create jobs, and more.
 
 **Skills:**
-- [`databricks-environment-setup`](skills/databricks-environment-setup/) - Comprehensive environment validation (CLI, databricks-connect, auth, MCP)
-- [`databricks-auth-manager`](skills/databricks-auth-manager/) - Configure OAuth authentication with profiles
-- [`databricks-job-orchestrator`](skills/databricks-job-orchestrator/) - Create, run, and monitor jobs
-- [`databricks-workspace-sync`](skills/databricks-workspace-sync/) - Upload and download files to/from workspace
+- [`databricks-environment-setup`](plugin/skills/databricks-environment-setup/) - Comprehensive environment validation (CLI, databricks-connect, auth, MCP)
+- [`databricks-auth-manager`](plugin/skills/databricks-auth-manager/) - Configure OAuth authentication with profiles
+- [`databricks-job-orchestrator`](plugin/skills/databricks-job-orchestrator/) - Create, run, and monitor jobs
+- [`databricks-workspace-sync`](plugin/skills/databricks-workspace-sync/) - Upload and download files to/from workspace
 
 ### 3. 🔍 Querying Data - Databricks DBSQL MCP Server
 
